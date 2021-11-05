@@ -14,4 +14,15 @@ jobs:
       run: | 
         python3 ./bin/movieScraper.py
 
+  telegramNotification:
+    runs-on: ubuntu-latest
+    steps:
+      - name: send telegram message
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: |
+            Hello There!
+
  
