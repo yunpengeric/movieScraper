@@ -14,6 +14,7 @@ jobs:
     #     python-version: 3.10
     - name: Run the job
       run: |
-        python3 movieScraper/bin/movieScraper.py
+        
+        python3 ./bin/movieScraper.py
 
  
