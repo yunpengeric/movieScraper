@@ -15,7 +15,7 @@ jobs:
     - name: movie scrapping
       id: movieScrapping
       run: | 
-        echo "::set-output name=titles::python3 ./bin/movieScraper.py"
+        echo "::set-output name=titles::$(python3 ./bin/movieScraper.py)"
 
   telegramNotification:
     runs-on: ubuntu-latest
