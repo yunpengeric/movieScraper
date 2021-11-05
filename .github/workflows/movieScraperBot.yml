@@ -3,18 +3,14 @@ name: movieScraperBot
 on: [push]
 
 jobs:
-  build-linux:
+  movieScrapping:
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v2
-    # - name: Set up Python 3.10
-    #   uses: actions/setup-python@v2
-    #   with:
-    #     python-version: 3.10
-    - name: Run the job
+    - name: install dependencies
       run: |
-        
+        pip install BeautifulSoup4
+    - name: movie scrapping
+      run: | 
         python3 ./bin/movieScraper.py
 
  
