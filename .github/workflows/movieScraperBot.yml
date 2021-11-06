@@ -11,13 +11,16 @@ jobs:
       run: |
         pip install BeautifulSoup4
         
+    - name: movie scrapping
+      id: movieScrapping
+      run: | 
+        python3 ./bin/movieScraper.py > output.txt
 
     - name: send telegram message
       uses: appleboy/telegram-action@master
       with:
         to: ${{ secrets.TELEGRAM_TO }}
         token: ${{ secrets.TELEGRAM_TOKEN }}
-        message: |
-          $(python3 ./bin/movieScraper.py)
+        message_file: output.txt
 
  
