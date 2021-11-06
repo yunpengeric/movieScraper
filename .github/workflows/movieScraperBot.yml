@@ -5,7 +5,7 @@ on:
     - cron: '0 6 * * *'
 
 jobs:
-  movieScrapping:
+  movieScraping:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -13,8 +13,8 @@ jobs:
       run: |
         pip install BeautifulSoup4
         
-    - name: movie scrapping
-      id: movieScrapping
+    - name: movie scraping
+      id: movieScraping
       run: | 
         python3 ./bin/movieScraper.py > output.txt
 
