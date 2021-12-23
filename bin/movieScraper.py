@@ -2,9 +2,8 @@ from urllib.request import Request, urlopen
 from bs4 import BeautifulSoup as bf
 def movieScraper():
     req = Request("http://www.xiaopian.com/html/gndy/dyzz/index.html", headers={'User-Agent': 'Mozilla/5.0'})   
-    req.encoding = 'gbk'
     html = urlopen(req)
-    obj = bf(html.read(),'html.parser')
+    obj = bf(html.read().decode('gbk'),'html.parser')
     tables = obj.find_all("a", class_="ulink")
     for i,table in enumerate(tables):
         title = table["title"]
