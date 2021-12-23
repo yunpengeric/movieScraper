@@ -18,7 +18,7 @@ jobs:
     - name: movie scraping
       id: movieScraping
       run: | 
-        python3 ./bin/movieScraper.py > latest_movies.txt
+        python3 ./bin/movieScraper.py | tee latest_movies.txt
 
     - name: send a telegram message
       uses: appleboy/telegram-action@master
