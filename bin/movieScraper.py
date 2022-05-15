@@ -1,10 +1,9 @@
-from urllib.request import Request, urlopen
+import requests
 from bs4 import BeautifulSoup as bf
 def movieScraper():
-    req = Request("http://www.xiaopian.com/html/gndy/dyzz/index.html", headers={'User-Agent': 'Mozilla/5.0'})   
-    html = urlopen(req)
-    obj = bf(html.read().decode('gbk'),'html.parser')
-    tables = obj.find_all("a", class_="ulink")
+    page = requests.get("http://www.xiaopian.com/html/gndy/dyzz/index.html")
+    html = bf(page.content, "html.parser")  
+    tables = html.find_all("a", class_="ulink")
     for i,table in enumerate(tables):
         title = table["title"]
         if i == 6:
