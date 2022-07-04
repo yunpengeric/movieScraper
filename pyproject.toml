@@ -1,0 +1,23 @@
+[project]
+name = ""
+version = ""
+description = ""
+authors = [
+    {name = "eric", email = "ericyi@hotmail.com"},
+]
+dependencies = [
+    "beautifulsoup4==4.10.0",
+    "requests>=2.28.1",
+]
+requires-python = ">=3.7"
+license = {text = "MIT"}
+
+[tool.pdm]
+[[tool.pdm.source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[build-system]
+requires = ["pdm-pep517"]
+build-backend = "pdm.pep517.api"
