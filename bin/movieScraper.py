@@ -9,7 +9,7 @@ def movieScraper():
         "DNT": "1",
         "Upgrade-Insecure-Requests": "1"
     }
-    page = requests.get("http://m.xiaopian.com/html/gndy/dyzz/index.html", headers=headers
+    page = requests.get("http://m.xiaopian.com/html/gndy/dyzz/index.html", headers=headers)
     html = bf(page.content.decode("utf-8"), "html.parser")  
     print(html)
     tables = html.find_all("a", class_="ulink")
