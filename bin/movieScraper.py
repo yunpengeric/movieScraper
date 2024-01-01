@@ -2,6 +2,7 @@ import requests
 from bs4 import BeautifulSoup as bf
 def movieScraper():
     page = requests.get("https://m.xiaopian.com/html/gndy/dyzz/index.html", headers={'User-Agent': 'Mozilla/5.0'})
+    print(page.encoding)
     html = bf(page.content.decode("utf-8"), "html.parser")  
     print(html)
     tables = html.find_all("a", class_="ulink")
