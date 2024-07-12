@@ -1,17 +1,11 @@
-import requests
-from bs4 import BeautifulSoup as bs
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from bs4 import BeautifulSoup
 import time
 import random
-from requests.adapters import HTTPAdapter
-from requests.packages.urllib3.util.retry import Retry
-
-def create_session():
-    session = requests.Session()
-    retry = Retry(total=3, backoff_factor=0.1, status_forcelist=[500, 502, 503, 504])
-    adapter = HTTPAdapter(max_retries=retry)
-    session.mount('http://', adapter)
-    session.mount('https://', adapter)
-    return session
 
 def get_random_user_agent():
     user_agents = [
@@ -23,39 +17,34 @@ def get_random_user_agent():
 
 def movie_scraper():
     url = "http://m.xiaopian.com/html/gndy/dyzz/index.html"
-    session = create_session()
     
-    headers = {
-        "User-Agent": get_random_user_agent(),
-        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
-        "Accept-Language": "en-US,en;q=0.9",
-        "Referer": "https://www.google.com",
-        "DNT": "1",
-        "Upgrade-Insecure-Requests": "1",
-        "Cache-Control": "max-age=0"
-    }
+    options = Options()
+    options.add_argument(f"user-agent={get_random_user_agent()}")
+    options.add_argument("--headless")  # Run in headless mode (no GUI)
+    
+    driver = webdriver.Chrome(options=options)
     
     try:
-        response = session.get(url, headers=headers, timeout=10)
-        response.raise_for_status()
+        driver.get(url)
         
-        if "/_guard/auto.js" in response.text:
-            print("Anti-bot protection detected. Attempting to bypass...")
-            # Here you would implement more sophisticated bypass techniques
-            return
+        # Wait for the page to load (adjust the timeout and condition as needed)
+        WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.CLASS_NAME, "ulink"))
+        )
         
-        soup = bs(response.content, "html.parser")
+        # Parse the page source with BeautifulSoup
+        soup = BeautifulSoup(driver.page_source, "html.parser")
         movie_links = soup.find_all("a", class_="ulink")
         
         for i, link in enumerate(movie_links[:6], 1):
             title = link.get("title", "No title found")
             print(f"{i}. {title}")
-            time.sleep(random.uniform(1, 3))  # Random delay between requests
+            time.sleep(random.uniform(1, 3))  # Random delay between processing each item
             
-    except requests.RequestException as e:
-        print(f"An error occurred while fetching the page: {e}")
     except Exception as e:
-        print(f"An unexpected error occurred: {e}")
+        print(f"An error occurred: {e}")
+    finally:
+        driver.quit()
 
 if __name__ == '__main__':
     movie_scraper()
