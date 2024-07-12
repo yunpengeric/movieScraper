@@ -1,8 +1,4 @@
-from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
+import requests
 from bs4 import BeautifulSoup
 import time
 import random
@@ -18,33 +14,37 @@ def get_random_user_agent():
 def movie_scraper():
     url = "http://m.xiaopian.com/html/gndy/dyzz/index.html"
     
-    options = Options()
-    options.add_argument(f"user-agent={get_random_user_agent()}")
-    options.add_argument("--headless")  # Run in headless mode (no GUI)
-    
-    driver = webdriver.Chrome(options=options)
+    headers = {
+        "User-Agent": get_random_user_agent(),
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
+        "Accept-Language": "en-US,en;q=0.9",
+        "Referer": "https://www.google.com",
+        "DNT": "1",
+        "Upgrade-Insecure-Requests": "1",
+        "Cache-Control": "max-age=0"
+    }
     
     try:
-        driver.get(url)
+        response = requests.get(url, headers=headers, timeout=10)
+        response.raise_for_status()
         
-        # Wait for the page to load (adjust the timeout and condition as needed)
-        WebDriverWait(driver, 10).until(
-            EC.presence_of_element_located((By.CLASS_NAME, "ulink"))
-        )
+        if "/_guard/auto.js" in response.text:
+            print("Anti-bot protection detected. Attempting simple bypass...")
+            time.sleep(random.uniform(2, 5))  # Wait for a random time
+            response = requests.get(url, headers=headers, timeout=10)  # Try again
         
-        # Parse the page source with BeautifulSoup
-        soup = BeautifulSoup(driver.page_source, "html.parser")
+        soup = BeautifulSoup(response.content, "html.parser")
         movie_links = soup.find_all("a", class_="ulink")
         
         for i, link in enumerate(movie_links[:6], 1):
             title = link.get("title", "No title found")
             print(f"{i}. {title}")
-            time.sleep(random.uniform(1, 3))  # Random delay between processing each item
+            time.sleep(random.uniform(1, 3))  # Random delay between requests
             
+    except requests.RequestException as e:
+        print(f"An error occurred while fetching the page: {e}")
     except Exception as e:
-        print(f"An error occurred: {e}")
-    finally:
-        driver.quit()
+        print(f"An unexpected error occurred: {e}")
 
 if __name__ == '__main__':
     movie_scraper()
