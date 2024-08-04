@@ -49,7 +49,7 @@ def movie_scraper():
         #     response = session.get(url, headers=headers, timeout=10)
         
         soup = BeautifulSoup(response.content, "html.parser")
-        movie_links = soup.find_all("a", target="_blank")
+        movie_links = soup.select("td.list2 > span.ys_3 > a[target='_blank']:nth-of-type(2)")
         
         if not movie_links:
             print("No movie links found. Printing full response content:")
@@ -57,8 +57,7 @@ def movie_scraper():
         else:
             print(movie_links)
             for i, link in enumerate(movie_links[:6], 1):
-                title = link.get("title", "No title found")
-                print(f"{i}. {title}")
+                print(f"{i}. {movie_links}")
                 time.sleep(random.uniform(1, 3))
             
     except requests.RequestException as e:
