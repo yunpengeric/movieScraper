@@ -12,7 +12,7 @@ def get_random_user_agent():
     return random.choice(user_agents)
 
 def movie_scraper():
-    url = "http://m.xiaopian.com/html/gndy/dyzz/index.html"
+    url = "http://www.etdown.net"
     
     session = requests.Session()
     
@@ -30,26 +30,26 @@ def movie_scraper():
     
     try:
         # First, make a GET request to the homepage
-        session.get("http://m.xiaopian.com", headers=headers, timeout=10)
+        session.get("http:///www.etdown.net", headers=headers, timeout=10)
         time.sleep(random.uniform(2, 5))
 
         # Now request the actual page we want
         response = session.get(url, headers=headers, timeout=10)
         response.raise_for_status()
         
-        if "/_guard/auto.js" in response.text:
-            print("Anti-bot protection still detected. Trying another approach...")
-            time.sleep(random.uniform(5, 10))  # Wait longer
+        # if "/_guard/auto.js" in response.text:
+        #     print("Anti-bot protection still detected. Trying another approach...")
+        #     time.sleep(random.uniform(5, 10))  # Wait longer
             
-            # Try to fetch the JavaScript file
-            js_response = session.get("http://m.xiaopian.com/_guard/auto.js", headers=headers)
-            print(f"JavaScript response status: {js_response.status_code}")
+        #     # Try to fetch the JavaScript file
+        #     js_response = session.get("http://m.xiaopian.com/_guard/auto.js", headers=headers)
+        #     print(f"JavaScript response status: {js_response.status_code}")
             
-            # Make the main request again
-            response = session.get(url, headers=headers, timeout=10)
+        #     # Make the main request again
+        #     response = session.get(url, headers=headers, timeout=10)
         
         soup = BeautifulSoup(response.content, "html.parser")
-        movie_links = soup.find_all("a", class_="ulink")
+        movie_links = soup.find_all("a", target="_blank")
         
         if not movie_links:
             print("No movie links found. Printing full response content:")
