@@ -55,6 +55,7 @@ def movie_scraper():
             print("No movie links found. Printing full response content:")
             print(response.text)
         else:
+            print(movie_links)
             for i, link in enumerate(movie_links[:6], 1):
                 title = link.get("title", "No title found")
                 print(f"{i}. {title}")
