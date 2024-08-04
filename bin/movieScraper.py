@@ -55,11 +55,13 @@ def movie_scraper():
             print("No movie links found. Printing full response content:")
             print(response.text)
         else:
-            print(movie_links)
-            for i, link in enumerate(movie_links[:6], 1):
-                print(f"{i}. {movie_links}")
-                time.sleep(random.uniform(1, 3))
-            
+           # Extract only the text content that are likely to be Chinese movie names
+           movie_names = [link.text for link in movie_links if link.text and not link.find('img') and link.text != '网站导航']
+
+        # Print the results
+           for name in movie_names:
+            print(name) 
+                        
     except requests.RequestException as e:
         print(f"An error occurred while fetching the page: {e}")
     except Exception as e:
