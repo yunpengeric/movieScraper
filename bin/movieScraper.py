@@ -30,7 +30,7 @@ def movie_scraper():
     
     try:
         # First, make a GET request to the homepage
-        session.get("http:///www.etdown.net", headers=headers, timeout=10)
+        session.get("http://www.etdown.net", headers=headers, timeout=10)
         time.sleep(random.uniform(2, 5))
 
         # Now request the actual page we want
