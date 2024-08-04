@@ -1,0 +1,18 @@
+[project]
+name = "movieScraper"
+version = "0.1.0"
+description = "Default template for PDM package"
+authors = [
+    {name = "eric", email = "ericyi@hotmail.com"},
+]
+dependencies = [
+    "beautifulsoup4==4.10.0",
+    "requests>=2.31.0",
+]
+requires-python = "==3.12.*"
+readme = "README.md"
+license = {text = "MIT"}
+
+
+[tool.pdm]
+package-type = "application"

@@ -1,4 +1,5 @@
 # Movie Scraper
+[![pdm-managed](https://img.shields.io/badge/pdm-managed-blueviolet)](https://pdm.fming.dev)
 ## Background
 This project is a telegram bot to get the latest movie torrent releases.
 ## Process
